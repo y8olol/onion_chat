@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Chat System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.20.0/emoji-picker.css">
+</head>
+<body>
+    <!-- Access Code Screen -->
+    <div id="access-screen" class="screen">
+        <div class="container">
+            <h1>Anonymous Chat System</h1>
+            <p>Enter access code to continue</p>
+            <input type="password" id="access-code" placeholder="Access Code" maxlength="20">
+            <button onclick="verifyAccess()">Enter</button>
+            <div id="access-error" class="error"></div>
+        </div>
+    </div>
+
+    <!-- Room Selection Screen -->
+    <div id="room-screen" class="screen hidden">
+        <div class="container">
+            <h1>Anonymous Chat Rooms</h1>
+            
+            <div class="room-actions">
+                <button onclick="showCreateRoom()">Create New Room</button>
+                <button onclick="loadRooms()">Refresh Rooms</button>
+            </div>
+
+            <div id="create-room" class="hidden">
+                <h3>Create New Room</h3>
+                <input type="text" id="room-name" placeholder="Room name" maxlength="50">
+                <button onclick="createRoom()">Create</button>
+                <button onclick="hideCreateRoom()">Cancel</button>
+            </div>
+
+            <div id="rooms-list">
+                <h3>Available Rooms</h3>
+                <div id="rooms-container">
+                    Loading rooms...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chat-screen" class="screen hidden">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2 id="chat-room-name">Room Name</h2>
+                <div class="chat-info">
+                    <span id="username-display">Your name: Loading...</span>
+                    <button onclick="exportChat()">📥 Export Chat</button>
+                    <button onclick="leaveRoom()">Leave Room</button>
+                </div>
+            </div>
+            
+            <div id="messages-container">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div id="chat-input-container">
+                <div class="input-row">
+                    <input type="text" id="message-input" placeholder="Type your message..." maxlength="500">
+                    <button id="emoji-btn" onclick="toggleEmojiPicker()">😀</button>
+                    <label for="file-input" class="file-btn" title="Upload file">📎</label>
+                    <input type="file" id="file-input" style="display: none;" onchange="handleFileSelect(event)">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+                
+                <!-- Emoji Picker Container -->
+                <div id="emoji-picker-container" class="hidden">
+                    <emoji-picker></emoji-picker>
+                </div>
+                
+                <!-- File Preview -->
+                <div id="file-preview" class="hidden">
+                    <div class="file-preview-content">
+                        <span id="file-preview-name"></span>
+                        <span id="file-preview-size"></span>
+                        <button onclick="clearFileSelection()">✕</button>
+                    </div>
+                    <div class="file-upload-progress hidden">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Uploading...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="room-locked-notice" class="hidden error">
+                This room has been locked due to inactivity. You can read messages but cannot send new ones.
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="export-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Export Chat History</h3>
+            <p>Choose export format:</p>
+            <div class="export-options">
+                <button onclick="downloadExport('json')">📄 JSON Format</button>
+                <button onclick="downloadExport('txt')">📝 Text Format</button>
+            </div>
+            <button onclick="closeExportModal()" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.20.0/index.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

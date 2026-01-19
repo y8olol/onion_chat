@@ -1,0 +1,22 @@
+# Sample torrc configuration file for Windows
+# Place this in your Tor installation directory
+
+# Basic Tor settings
+SocksPort 9050
+ControlPort 9051
+CookieAuthentication 1
+
+# Log configuration
+Log notice file C:\tor-logs\notices.log
+Log info file C:\tor-logs\tor.log
+
+# Hidden Service for Anonymous Chat
+HiddenServiceDir C:\tor-data\anonymous-chat\
+HiddenServicePort 80 127.0.0.1:3000
+
+# Additional security settings
+HiddenServiceVersion 3
+HiddenServiceNumIntroductionPoints 5
+
+# Disable client connections from non-Tor users
+SocksPolicy reject *
